@@ -1,0 +1,30 @@
+.login-form-container{
+    width: 60%;
+    margin: auto;
+    margin-top: 15%;
+}
+
+.login-form-label{
+    text-align: center;
+    font-size: 45px;
+    font-weight: 900;
+    background-color: #a04cf4;
+    color: white;
+    border-radius: 4px;
+}
+
+.field-container{
+    width: 90%;
+    margin: auto;
+    margin-top: 20px;
+}
+
+.input-field, .submit-button{
+    width: 100%;
+    border-radius: 4px;
+    height: 35px;
+}
+
+.error-field{
+    border: 2px solid red;
+}

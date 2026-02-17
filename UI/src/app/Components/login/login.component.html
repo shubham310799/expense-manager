@@ -1,0 +1,32 @@
+<div class="login-page">
+    <div class="login-form-container">
+        <div class="login-form-label">
+            Login
+        </div>
+        <form #loginForm="ngForm">
+            <div class="field-container">
+                <input type="email" name="email" required placeholder="Email" class="input-field" [(ngModel)]="email" #loginId="ngModel" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" [ngClass]="{'error-field':loginId.dirty && !loginId.valid}">
+            </div>
+            <div class="field-container">
+                <input [type]="showPassword?'text':'password'" 
+                name="password" 
+                placeholder="Password" 
+                required
+                class="input-field" 
+                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+                [(ngModel)]="password" 
+                #loginPassword="ngModel"
+                [ngClass]="{'error-field':loginPassword.dirty && !loginPassword.valid}">
+                @if (!showPassword) {
+                    <mat-icon (click)="ToggleShowPassword()">visibility</mat-icon>
+                }
+                @else {
+                    <mat-icon (click)="ToggleShowPassword()">visibility_off</mat-icon>
+                }
+            </div>
+            <div class="field-container" (click)="HandleSubmit()">
+                <button class="submit-button" [disabled]="loginId.invalid || loginPassword.invalid">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
