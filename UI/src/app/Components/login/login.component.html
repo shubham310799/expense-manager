@@ -5,7 +5,7 @@
         </div>
         <form #loginForm="ngForm">
             <div class="field-container">
-                <input type="email" name="email" required placeholder="Email" class="input-field" [(ngModel)]="email" #loginId="ngModel" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" [ngClass]="{'error-field':loginId.dirty && !loginId.valid}">
+                <input type="email" name="email" required placeholder="Email" class="input-field" [(ngModel)]="email" #loginId="ngModel" [ngClass]="{'error-field':loginId.dirty && !loginId.valid}" appEmailValidator>
             </div>
             <div class="field-container">
                 <input [type]="showPassword?'text':'password'" 
@@ -25,7 +25,7 @@
                 }
             </div>
             <div class="field-container" (click)="HandleSubmit()">
-                <button class="submit-button" [disabled]="loginId.invalid || loginPassword.invalid">Submit</button>
+                <button class="submit-button" [disabled]="loginId.invalid || loginPassword.invalid">{{sendingReq ? 'Submitting...' : 'Submit'}}</button>
             </div>
         </form>
     </div>

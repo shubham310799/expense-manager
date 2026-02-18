@@ -12,6 +12,6 @@ export class LoginService {
   }
 
   Login(reqBody:any):Observable<any>{
-    return this.http.post("http://localhost:5321/login", reqBody);
+    return this.http.post("http://localhost:5248/api/user/login", reqBody);
   }
 }
