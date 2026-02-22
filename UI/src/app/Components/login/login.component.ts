@@ -18,6 +18,7 @@ export class LoginComponent {
   password:string="";
   sendingReq:boolean=false;
   showPassword:boolean = false;
+  jwt:string="";
   constructor(private loginService : LoginService, private router:Router){
 
   }
@@ -28,6 +29,8 @@ export class LoginComponent {
         this.sendingReq=false;
         console.log("login Successful");
         console.log(data);
+        this.jwt = data.data;
+        this.loginService.SaveUserSession(this.jwt);
         this.router.navigate(['/home']);
       },
       error: (err)=>{

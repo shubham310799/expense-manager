@@ -1,1 +1,13 @@
-<p>home works!</p>
+<div class="home-container">
+    @if (expenseGroups && expenseGroups.length) {
+        <div class="expenses-container">
+
+        </div>
+    }
+    @else {
+        <div class="no-expenses-container">
+            <div class="no-expense-text">Oops.. You have not added any expense so far!</div>
+            <div class="add-expense-button"><button>Add now</button></div>
+        </div>
+    }
+</div>

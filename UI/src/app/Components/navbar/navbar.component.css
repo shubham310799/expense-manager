@@ -1,0 +1,21 @@
+.navbar-container{
+    display: flex;
+    justify-content: space-between;
+    background-color: #a04cf4;
+    color: white;
+    padding: 10px;
+}
+
+.navbar-links{
+    margin-top: 23px;
+}
+
+.navbar-link{
+    display: inline;
+    margin: 10px;
+}
+
+.navbar-link>a, .navbar-logo-container>a{
+    text-decoration: none; /* Removes the underline */
+  color: inherit;        /* Inherits color from the parent element */
+}
