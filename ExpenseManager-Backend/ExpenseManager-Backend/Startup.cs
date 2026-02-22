@@ -13,6 +13,7 @@ namespace ExpenseManager_Backend
     public class Startup
     {
         public IConfiguration config;
+        string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration config)
         {
             this.config = config;
@@ -20,7 +21,11 @@ namespace ExpenseManager_Backend
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            
+            services.AddControllers(options =>
+            {
+                options.Filters.Add<ApiResponseStatusCodeFilter>();
+            });
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
 
@@ -28,9 +33,15 @@ namespace ExpenseManager_Backend
             {
                 options.UseSqlServer("Server=localhost;Database=expense_manager;Trusted_Connection=True;Encrypt=True;TrustServerCertificate=True;");
             });
+            services.AddHttpContextAccessor();
             services.AddSingleton<IPasswordHasherService, PasswordHasherService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IExpenseService, ExpenseService>();
+            services.AddScoped<IExpenseRepository, ExpenseRepository>();
+            services.AddScoped<IExpenseGroupRepository, ExpenseGroupRepository>();
+            services.AddScoped<IExpenseGroupService, ExpenseGroupService>();
+            services.AddScoped<IHttpContextHelper, HttpContextHelper>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
@@ -46,6 +57,18 @@ namespace ExpenseManager_Backend
                 };
             });
             services.AddSingleton<IJwtTokenService, JwtTokenService>();
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                    policy =>
+                    {
+                        policy.WithOrigins("http://localhost:4200",
+                                            "http://www.example.com")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                    }
+                );
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -57,8 +80,9 @@ namespace ExpenseManager_Backend
             }
             app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseCors(MyAllowSpecificOrigins);
             app.UseAuthentication();
-            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

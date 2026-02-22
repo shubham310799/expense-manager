@@ -1,4 +1,5 @@
-﻿using ExpenseManager_Backend.Models;
+﻿using ExpenseManager_Backend.Common;
+using ExpenseManager_Backend.Models;
 using ExpenseManager_Backend.Services.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,31 +15,41 @@ namespace ExpenseManager_Backend.Controllers
             _userService = userService;
         }
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginRequest req)
+        public async Task<GlobalResponse<string>> Login(LoginRequest req)
         {
+            var res = new GlobalResponse<string>();
             try
             {
-                var res = await _userService.Login(req);
-                return Ok(res);
+                res = await _userService.Login(req);
             }
             catch (Exception ex)
             {
-                return BadRequest();
+                res.Error = new ErrorDetails
+                {
+                    ErrorMessage="something went wrong",
+                    ErrorCode="SOMETHIG_WENT_WRONG"
+                };
             }
+            return res;
         }
 
         [HttpPost("signup")]
-        public async Task<IActionResult> Signup(SignupRequest req)
+        public async Task<GlobalResponse<string>> Signup(SignupRequest req)
         {
+            var res = new GlobalResponse<string>();
             try
             {
-                await _userService.Signup(req);
-                return Ok(req);
+                res = await _userService.Signup(req);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                res.Error = new ErrorDetails
+                {
+                    ErrorMessage = "something went wrong",
+                    ErrorCode = "SOMETHIG_WENT_WRONG"
+                };
             }
+            return res;
         }
     }
 }
